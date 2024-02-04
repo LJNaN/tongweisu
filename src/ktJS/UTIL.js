@@ -203,7 +203,7 @@ function setModelPosition(mesh) {
   const scaleY = gui.add(mesh.scale, "y").step(0.1).onChange(val => mesh.scale.y = val).name('scaleY');
   const scaleZ = gui.add(mesh.scale, "z").step(0.1).onChange(val => mesh.scale.z = val).name('scaleZ');
   controls.attach(mesh);
-  
+
   controls.addEventListener("change", (e) => {
     positionX.setValue(mesh.position.x);
     positionY.setValue(mesh.position.y);
@@ -276,6 +276,7 @@ function instanceInit() {
     const count = CACHE.instanceTransformInfo[key].length;
     const instanceMesh = new Bol3D.InstancedMesh(geometry, material, count);
     instanceMesh.castShadow = true
+    instanceMesh.receiveShadow = true
     const matrix = new Bol3D.Matrix4();
     for (let i = 0; i < count; i++) {
       const { position, quaternion, scale } = CACHE.instanceTransformInfo[key][i]
@@ -286,7 +287,7 @@ function instanceInit() {
 
     if (key === 'tree') {
       instanceMesh.material.alphaToCoverage = true
-      instanceMesh.material.aoMapIntensity = 0
+      instanceMesh.material.aoMapIntensity = 1
     }
 
     CACHE.container.scene.add(instanceMesh)
@@ -319,7 +320,7 @@ function generateRandomPointInPolygon(polygon) {
   }
 }
 
-// 在范围里面不
+// 在范围里面吗
 function isPointInPolygon(point, polygon) {
   let x = point[0], y = point[1];
   let inside = false;
@@ -335,6 +336,55 @@ function isPointInPolygon(point, polygon) {
   return inside;
 }
 
+// 边缘生成随机点
+function generatePointsOnPolygonEdge(polygon, numberOfPoints) {
+  let edgeLengths = [];
+  let totalLength = 0;
+
+  // 计算多边形各条边的长度
+  for (let i = 0; i < polygon.length; i++) {
+    let startPoint = polygon[i];
+    let endPoint = polygon[(i + 1) % polygon.length];
+    let length = Math.sqrt(Math.pow(endPoint[0] - startPoint[0], 2) + Math.pow(endPoint[1] - startPoint[1], 2));
+    edgeLengths.push(length);
+    totalLength += length;
+  }
+
+  // 根据边长比例在边上均匀生成点
+  let points = [];
+  let accumulatedLength = 0;
+  for (let i = 0; i < polygon.length; i++) {
+    let startPoint = polygon[i];
+    let endPoint = polygon[(i + 1) % polygon.length];
+    let length = edgeLengths[i];
+    let numberOfPointsOnEdge = Math.round((length / totalLength) * numberOfPoints);
+
+    for (let j = 0; j < numberOfPointsOnEdge; j++) {
+      let t = j / numberOfPointsOnEdge;
+      let x = startPoint[0] + t * (endPoint[0] - startPoint[0]);
+      let y = startPoint[1] + t * (endPoint[1] - startPoint[1]);
+      points.push([x, y]);
+    }
+  }
+
+  return points;
+}
+
+// 多边形面积
+function calculatePolygonArea(vertices) {
+  let n = vertices.length;
+  let area = 0;
+
+  for (let i = 0; i < n; i++) {
+    let j = (i + 1) % n;
+    area += vertices[i][0] * vertices[j][1];
+    area -= vertices[j][0] * vertices[i][1];
+  }
+
+  area = Math.abs(area) / 2;
+  return area;
+}
+
 export const UTIL = {
   cameraAnimation,
   loadGUI,
@@ -342,5 +392,7 @@ export const UTIL = {
   instantiationSingleInfo,
   setModelPosition,
   instanceInit,
-  generateRandomPointInPolygon
+  generateRandomPointInPolygon,
+  calculatePolygonArea,
+  generatePointsOnPolygonEdge
 }
