@@ -1,19 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { loadSceneByJSON, sceneOnLoad } from "@/ktJS";
+import { loadSceneByJSON } from "@/ktJS";
 
 const sceneContainerRef = ref(null);
 
 onMounted(() => {
-  // sceneOnLoad({
-  //   domElement: sceneContainerRef.value,
-  //   callback: () => {
-  //     //
-  //   },
-  // });
-
-
-
   loadSceneByJSON({
     domElement: sceneContainerRef.value,
     callback: () => {
