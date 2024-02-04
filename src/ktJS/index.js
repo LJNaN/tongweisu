@@ -1,4 +1,5 @@
 import { API } from './API.js'
+import { UTIL } from './UTIL.js'
 import { CACHE } from './CACHE.js'
 import { STATE } from './STATE.js'
 import { DATA } from './DATA.js'
@@ -29,23 +30,59 @@ export const loadSceneByJSON = ({ domElement, callback }) => {
       container.loadModelsByUrl({
         modelUrls: jsonParser.modelUrls,
         onProgress: (model, evt) => {
+          STATE.sceneList[model.name] = model
+
+          if (model.name === 'WJ') {
+            const treeArr = model.children.filter(e => e.name.includes('Shu_'))
+            treeArr.forEach(e => {
+              e.parent.remove(e)
+              e.scale.set(DATA.sceneScale / 2, DATA.sceneScale / 2, DATA.sceneScale / 2)
+              e.position.set(e.position.x * DATA.sceneScale, e.position.y * DATA.sceneScale, e.position.z * DATA.sceneScale)
+            })
+            CACHE.originTreeArr = treeArr
+          }
         },
         onLoad: (evt) => {
+          CACHE.container = evt
           window.container = evt
+
+          API.initTree()
+          UTIL.instanceInit()
 
 
           evt.updateSceneByNodes(jsonParser.nodes[0], 0, () => {
-            
+            STATE.sceneList.WJ.traverse(e => {
+              if (e.isMesh && e.material.type === 'MeshStandardMaterial') {
+                if (e.material.name === 'ding1') {
+                  e.material.envMapIntensity = 0
+
+                } else if (e.name.includes('Shu_')) {
+                  e.visible = false
+                  e.material.dispose()
+                  e.geometry.dispose()
+                  setTimeout(() => {
+                    e.parent.remove(e)
+                  }, 0)
+
+                } else {
+                  e.material.envMapIntensity = 0.2
+                }
+              }
+            })
+            container.filterPass.enabled = true
+            container.filterPass.filterMaterial.uniforms.saturation.value = 0.65
           })
         }
       })
 
-
-      // 新增一个事件回调，用于处理编辑器内添加的事件，事件对象会返回对象uuid和事件类型等
-      events.handler.on('handleChange', handleChange)
+      const events = new Bol3D.Events(container)
+      events.register(jsonParser.nodes)
 
       // 以前的事件使用方法不变
-      events.ondblclick = (e) => { }
+      events.ondblclick = (e) => {
+        if (e.objects.length) {
+        }
+      }
       events.onhover = (e) => { }
     })
 }
