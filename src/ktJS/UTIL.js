@@ -250,13 +250,16 @@ function instantiationSingleInfo(identicalMeshArray, name) {
 
     if (!CACHE.removed[item.uuid]) CACHE.removed[item.uuid] = item;
 
-    item.geometry.dispose()
-    if (item.material.map) {
-      item.material.map.dispose()
-      item.material.map = null
-    }
-    item.material.dispose()
-    item = null
+
+    setTimeout(() => {
+      item.geometry.dispose()
+      if (item.material.map) {
+        item.material.map.dispose()
+        item.material.map = null
+      }
+      item.material.dispose()
+      item = null
+    }, 0)
   })
 }
 
@@ -285,7 +288,7 @@ function instanceInit() {
     }
     STATE.sceneList[key] = instanceMesh
 
-    if (key === 'tree') {
+    if (key === 'tree1') {
       instanceMesh.material.alphaToCoverage = true
       instanceMesh.material.aoMapIntensity = 1
     }

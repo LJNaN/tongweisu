@@ -46,8 +46,8 @@ export const loadSceneByJSON = ({ domElement, callback }) => {
           CACHE.container = evt
           window.container = evt
 
-          // API.initTree()
-          // UTIL.instanceInit()
+          API.initTree()
+          UTIL.instanceInit()
 
 
           evt.updateSceneByNodes(jsonParser.nodes[0], 0, () => {

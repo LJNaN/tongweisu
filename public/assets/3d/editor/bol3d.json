@@ -53732,6 +53732,107 @@
           "show": true,
           "parent": "",
           "events": []
+        },
+        {
+          "uuid": "root_shu_0",
+          "name": "singleTree",
+          "visible": true,
+          "selected": false,
+          "index": 1,
+          "spread": false,
+          "type": "Group",
+          "children": [
+            {
+              "uuid": "root_shu_0_YQ_Shu_01",
+              "name": "YQ_Shu_01",
+              "visible": true,
+              "selected": false,
+              "index": 1,
+              "spread": false,
+              "type": "Mesh",
+              "children": [],
+              "options": {
+                "position": [
+                  0,
+                  0,
+                  0
+                ],
+                "rotation": [
+                  0,
+                  0,
+                  0
+                ],
+                "scale": [
+                  1,
+                  1,
+                  1
+                ],
+                "renderOrder": 2,
+                "castShadow": true,
+                "receiveShadow": true,
+                "bloom": false
+              },
+              "show": true,
+              "parent": "root_shu_0",
+              "events": [],
+              "matOptions": [
+                {
+                  "uuid": "E2018E3B-FB34-4C27-ABFE-D3092A29D6BB",
+                  "type": "MeshStandardMaterial",
+                  "name": "Material #25",
+                  "color": "#ffffff",
+                  "transparent": false,
+                  "opacity": 1,
+                  "map": "",
+                  "depthTest": true,
+                  "depthWrite": true,
+                  "wireframe": false,
+                  "side": 2,
+                  "extends": {
+                    "roughnessMap": "",
+                    "roughness": 0.9,
+                    "metalnessMap": "",
+                    "metalness": 0,
+                    "normalMap": "",
+                    "normalScale": [
+                      1,
+                      1
+                    ],
+                    "alphaMap": "",
+                    "lightMap": "",
+                    "lightMapIntensity": 1,
+                    "emissive": "#000000",
+                    "emissiveMap": "",
+                    "emissiveIntensity": 1,
+                    "aoMap": "",
+                    "aoMapIntensity": 1,
+                    "envMapIntensity": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "options": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "renderOrder": 0
+          },
+          "show": true,
+          "parent": "",
+          "events": []
         }
       ],
       "threeDimensionAnimation": [],
@@ -54034,6 +54135,10 @@
     {
       "file": "WJ.glb",
       "id": 0
+    },
+    {
+      "file": "singleTree.glb",
+      "id": 1
     }
   ]
 }
