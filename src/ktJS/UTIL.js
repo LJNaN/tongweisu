@@ -289,8 +289,12 @@ function instanceInit() {
     STATE.sceneList[key] = instanceMesh
 
     if (key === 'tree1') {
-      instanceMesh.material.alphaToCoverage = true
-      instanceMesh.material.aoMapIntensity = 1
+      instanceMesh.material.aoMapIntensity = 0.5
+      instanceMesh.material.color = new Bol3D.Color(0.7, 1, 0.6)
+
+    } else if (key === 'tree2') {
+      instanceMesh.material.color = new Bol3D.Color(0.6, 0.62, 0.7)
+
     }
 
     CACHE.container.scene.add(instanceMesh)

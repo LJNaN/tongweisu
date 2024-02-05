@@ -53833,6 +53833,107 @@
           "show": true,
           "parent": "",
           "events": []
+        },
+        {
+          "uuid": "root_mainTree_0",
+          "name": "mainTree",
+          "visible": true,
+          "selected": true,
+          "index": 2,
+          "spread": false,
+          "type": "Group",
+          "children": [
+            {
+              "uuid": "root_mainTree_0_Shu_057",
+              "name": "Shu_057",
+              "visible": true,
+              "selected": false,
+              "index": 1,
+              "spread": false,
+              "type": "Mesh",
+              "children": [],
+              "options": {
+                "position": [
+                  0,
+                  -0.0018,
+                  0
+                ],
+                "rotation": [
+                  0,
+                  0,
+                  0
+                ],
+                "scale": [
+                  0.0458,
+                  0.0458,
+                  0.0458
+                ],
+                "renderOrder": 2,
+                "castShadow": true,
+                "receiveShadow": true,
+                "bloom": false
+              },
+              "show": true,
+              "parent": "root_mainTree_0",
+              "events": [],
+              "matOptions": [
+                {
+                  "uuid": "93619CBA-DCAB-44CC-BBF3-A08B1F838BC8",
+                  "type": "MeshStandardMaterial",
+                  "name": "Material #25",
+                  "color": "#ffffff",
+                  "transparent": false,
+                  "opacity": 1,
+                  "map": "",
+                  "depthTest": true,
+                  "depthWrite": true,
+                  "wireframe": false,
+                  "side": 2,
+                  "extends": {
+                    "roughnessMap": "",
+                    "roughness": 1,
+                    "metalnessMap": "",
+                    "metalness": 0,
+                    "normalMap": "",
+                    "normalScale": [
+                      1,
+                      1
+                    ],
+                    "alphaMap": "",
+                    "lightMap": "",
+                    "lightMapIntensity": 1,
+                    "emissive": "#000000",
+                    "emissiveMap": "",
+                    "emissiveIntensity": 1,
+                    "aoMap": "",
+                    "aoMapIntensity": 1,
+                    "envMapIntensity": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "options": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "renderOrder": 0
+          },
+          "show": true,
+          "parent": "",
+          "events": []
         }
       ],
       "threeDimensionAnimation": [],
@@ -53843,8 +53944,8 @@
           "name": "Fog",
           "type": "Fog",
           "options": {
-            "density": 0,
-            "color": "#AFEAFF"
+            "density": 0.0001,
+            "color": "#404d4d"
           }
         },
         {
@@ -54139,6 +54240,10 @@
     {
       "file": "singleTree.glb",
       "id": 1
+    },
+    {
+      "file": "mainTree.glb",
+      "id": 2
     }
   ]
 }

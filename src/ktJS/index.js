@@ -40,6 +40,8 @@ export const loadSceneByJSON = ({ domElement, callback }) => {
               e.position.set(e.position.x * DATA.sceneScale, e.position.y * DATA.sceneScale, e.position.z * DATA.sceneScale)
             })
             CACHE.originTreeArr = treeArr
+
+          } else if (model.name === 'mainTree') {
           }
         },
         onLoad: (evt) => {
