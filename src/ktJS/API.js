@@ -17,7 +17,7 @@ function initTree() {
     const randomScale = DATA.sceneScale * Math.floor(Math.random() * 5 + 10) / 10
 
     if ([0, 1, 2, 3, 8, 16, 19, 20].includes(index)) {
-      for (let i = 0, len = area / 100000; i < len; i++) {
+      for (let i = 0, len = area / 200000; i < len; i++) {
         const position = UTIL.generateRandomPointInPolygon(e)
         const newTree = mainTree.clone()
         newTree.scale.set(randomScale / 1.5, randomScale / 1.5, randomScale / 1.5)
