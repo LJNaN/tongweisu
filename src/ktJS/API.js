@@ -2,22 +2,27 @@ import { STATE } from './STATE.js'
 import { CACHE } from './CACHE.js'
 import { DATA } from './DATA.js'
 import { UTIL } from './UTIL.js'
+import { SimplifyModifier } from '@/assets/js/SimplifyModifier.js';
 
 
 // 加载、实例化树
 function initTree() {
   const treeArr1 = []
   const treeArr2 = []
-  const mainTree = STATE.sceneList.mainTree.children[0].clone()
   const singleTree = STATE.sceneList.singleTree.children[0].clone()
 
+  const modifier = new SimplifyModifier()
+  const mainTree = STATE.sceneList.mainTree.children[0].clone()
+  const count = Math.floor(mainTree.geometry.attributes.position.count * 0.34)
+  mainTree.geometry = modifier.modify(mainTree.geometry, count)
+  
   DATA.groundEdgeArr.forEach((e, index) => {
     const area = UTIL.calculatePolygonArea(e)
     const edgePoints = UTIL.generatePointsOnPolygonEdge(e, area / 300000)
     const randomScale = DATA.sceneScale * Math.floor(Math.random() * 5 + 10) / 10
 
     if ([0, 1, 2, 3, 8, 16, 19, 20].includes(index)) {
-      for (let i = 0, len = area / 200000; i < len; i++) {
+      for (let i = 0, len = area / 100000; i < len; i++) {
         const position = UTIL.generateRandomPointInPolygon(e)
         const newTree = mainTree.clone()
         newTree.scale.set(randomScale / 1.5, randomScale / 1.5, randomScale / 1.5)
