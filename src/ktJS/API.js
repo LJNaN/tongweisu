@@ -54,6 +54,7 @@ function handleInitModel(model, evt) {
         e2.userData.y = e.position.y
         if (e2.isMesh) {
           STATE.saveClickObjects[name].push(e2)
+          e2.material.alphaToCoverage = true
         }
       })
     })
@@ -228,14 +229,14 @@ function enterBuilding(building) {
     STATE.sceneList['201-v1'].visible = true
     STATE.currentScene.value = 'building_201'
     container.clickObjects = STATE.saveClickObjects['201']
-    container.orbitCamera.position.set(6.68, 542, 1079.57)
-    container.orbitControls.target.set(13.15, 100, 31.77)
+    container.orbitCamera.position.set(1040.42, 570, -692.77)
+    container.orbitControls.target.set(-54.74, 100, 167.14)
 
   } else if (building === '211') {
     STATE.sceneList['211-v1'].visible = true
     STATE.currentScene.value = 'building_211'
     container.clickObjects = STATE.saveClickObjects['211']
-    container.orbitCamera.position.set(-22.42, 476.07, 1347.28)
+    container.orbitCamera.position.set(-22.24, 788.51, 1538.16)
     container.orbitControls.target.set(-23.51, 197.31, 151.62)
   }
 }
