@@ -30,19 +30,11 @@ export const loadSceneByJSON = ({ domElement, callback }) => {
       container.loadModelsByUrl({
         modelUrls: jsonParser.modelUrls,
         onProgress: (model, evt) => {
-          STATE.sceneList[model.name] = model
+          GLOBAL.loadedModelNum++
+          GLOBAL.loadingPercent.value = Math.floor(GLOBAL.loadedModelNum / GLOBAL.modelNum * 100) - 1
 
-          if (model.name === 'WJ') {
-            const treeArr = model.children.filter(e => e.name.includes('Shu_'))
-            treeArr.forEach(e => {
-              e.parent.remove(e)
-              e.scale.set(DATA.sceneScale / 2, DATA.sceneScale / 2, DATA.sceneScale / 2)
-              e.position.set(e.position.x * DATA.sceneScale, e.position.y * DATA.sceneScale, e.position.z * DATA.sceneScale)
-            })
-            CACHE.originTreeArr = treeArr
+          API.handleInitModel(model, evt)
 
-          } else if (model.name === 'mainTree') {
-          }
         },
         onLoad: (evt) => {
           CACHE.container = evt
@@ -51,42 +43,32 @@ export const loadSceneByJSON = ({ domElement, callback }) => {
           API.initTree()
           UTIL.instanceInit()
 
-
           evt.updateSceneByNodes(jsonParser.nodes[0], 0, () => {
-            STATE.sceneList.WJ.traverse(e => {
-              if (e.isMesh && e.material.type === 'MeshStandardMaterial') {
-                if (e.material.name === 'ding1') {
-                  e.material.envMapIntensity = 0
-
-                } else if (e.name.includes('Shu_')) {
-                  e.visible = false
-                  e.material.dispose()
-                  e.geometry.dispose()
-                  setTimeout(() => {
-                    e.parent.remove(e)
-                  }, 0)
-
-                } else {
-                  e.material.envMapIntensity = 0.2
-                }
-              }
-            })
-            container.filterPass.enabled = true
-            container.filterPass.filterMaterial.uniforms.saturation.value = 0.65
-
-
+            API.changeEnvironment()
+            API.saveWJMeshes()
+            STATE.initCameraState.position = evt.orbitCamera.position.clone()
+            STATE.initCameraState.target = evt.orbitControls.target.clone()
+            GLOBAL.loadingPercent.value = 100
           })
         }
       })
 
       const events = new Bol3D.Events(container)
-      events.register(jsonParser.nodes)
 
       // 以前的事件使用方法不变
       events.ondblclick = (e) => {
-        if (e.objects.length) {
+        if (e.event.button === 0) {// 左键
+          if (e.objects.length) {
+            API.doubleClickFunc(e.objects[0])
+          }
+          
+        } else if (e.event.button === 2) { // 右键
+          API.back()
         }
       }
-      events.onhover = (e) => { }
+
+      events.onhover = (e) => {
+        API.hoverFunc(e)
+      }
     })
 }

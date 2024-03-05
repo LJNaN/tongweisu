@@ -15,14 +15,10 @@ function cameraAnimation({ cameraState, callback, delayTime = 0, duration = 800 
     return
   }
 
-  if (STATE.isAnimating) return
-  STATE.isAnimating = true
-
   CACHE.container.orbitControls.enabled = false
-
   let count = 0
 
-  const t1 = new Bol3D.TWEEN.Tween(CACHE.container.orbitControls.object.position)
+  const t1 = new Bol3D.TWEEN.Tween(CACHE.container.orbitCamera.position)
     .to(
       {
         x: cameraState.position.x,
@@ -31,18 +27,17 @@ function cameraAnimation({ cameraState, callback, delayTime = 0, duration = 800 
       },
       duration
     )
+    .easing(Bol3D.TWEEN.Easing.Quadratic.InOut)
     .onUpdate(() => { })
     .onComplete(() => {
       count++
 
       if (count == 2) {
         CACHE.container.orbitControls.enabled = true
-        STATE.isAnimating = false
         callback && callback()
       }
     })
 
-  t1.delay(delayTime).start()
 
   const t2 = new Bol3D.TWEEN.Tween(CACHE.container.orbitControls.target)
     .to(
@@ -53,12 +48,12 @@ function cameraAnimation({ cameraState, callback, delayTime = 0, duration = 800 
       },
       duration
     )
+    .easing(Bol3D.TWEEN.Easing.Quadratic.InOut)
     .onUpdate(() => { })
     .onComplete(() => {
       count++
       if (count == 2) {
         CACHE.container.orbitControls.enabled = true
-        STATE.isAnimating = false
         callback && callback()
       }
     })
@@ -290,10 +285,10 @@ function instanceInit() {
 
     if (key === 'tree1') {
       instanceMesh.material.aoMapIntensity = 0.5
-      instanceMesh.material.color = new Bol3D.Color(0.7, 1, 0.6)
+      instanceMesh.material.color = new Bol3D.Color(0.9, 1.5, 1.05)
 
     } else if (key === 'tree2') {
-      instanceMesh.material.color = new Bol3D.Color(0.6, 0.62, 0.7)
+      instanceMesh.material.color = new Bol3D.Color(0.8, 0.8, 1)
 
     }
 
@@ -392,6 +387,38 @@ function calculatePolygonArea(vertices) {
   return area;
 }
 
+// 计算相机到目标指定长度的位置
+function getCameraToTargetPosition(target = new Bol3D.Vector3(0, 0, 0), distance = 1000) {
+  const direction = new Bol3D.Vector3()
+  direction.subVectors(CACHE.container.orbitCamera.position, target)
+  direction.normalize()
+
+  const offset = direction.clone().multiplyScalar(distance)
+
+  const newPosition = new Bol3D.Vector3()
+  newPosition.addVectors(target, offset)
+
+  return newPosition
+}
+
+
+// 计算世界坐标
+function getWorldPosition(object) {
+  const worldP = new Bol3D.Vector3()
+  const worldS = new Bol3D.Vector3()
+  const worldQ = new Bol3D.Quaternion()
+
+  object.getWorldPosition(worldP)
+  object.getWorldScale(worldS)
+  object.getWorldQuaternion(worldQ)
+
+  return {
+    position: worldP,
+    scale: worldS,
+    quaternion: worldQ
+  }
+}
+
 export const UTIL = {
   cameraAnimation,
   loadGUI,
@@ -401,5 +428,7 @@ export const UTIL = {
   instanceInit,
   generateRandomPointInPolygon,
   calculatePolygonArea,
-  generatePointsOnPolygonEdge
+  generatePointsOnPolygonEdge,
+  getCameraToTargetPosition,
+  getWorldPosition
 }

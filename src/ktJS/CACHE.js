@@ -7,7 +7,7 @@ export const CACHE = {
   container,
   instanceTransformInfo,
   instanceMeshInfo,
-  removed
+  removed,
 }
 
 window.CACHE = CACHE
