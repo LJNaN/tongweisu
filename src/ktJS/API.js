@@ -55,6 +55,10 @@ function handleInitModel(model, evt) {
         if (e2.isMesh) {
           STATE.saveClickObjects[name].push(e2)
           e2.material.alphaToCoverage = true
+
+          if(e2.name.includes('_Floor')) {
+            e2.renderOrder = 1
+          }
         }
       })
     })
@@ -172,6 +176,7 @@ function changeEnvironment() {
 // 左键双击事件
 function doubleClickFunc(firstObj) {
   const obj = firstObj.object
+  console.log('obj: ', obj);
 
   const building = obj.userData.building
   const floor = obj.userData.floor
@@ -247,26 +252,16 @@ class FloorSplit {
   tween = null
   model = null
   activeFloor = null
-  debounceFlag = false
-  debounceTimer = null
 
   constructor(floor = '') {
     if (floor !== undefined) { this.activeFloor = floor }
-    this.setDebounceTimer()
   }
 
-  setDebounceTimer() {
-    this.debounceFlag = false
-    this.debounceTimer = setTimeout(() => {
-      this.debounceFlag = true
-    }, 300)
-  }
 
   hover(floor) {
     if (floor !== undefined) {
       if (floor === this.activeFloor) {
-        if (!this.debounceFlag) return
-        this.setDebounceTimer()
+        return
       }
       this.activeFloor = floor
     }
